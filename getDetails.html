@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Product Detail</h1>
-    <div id="productDetail">
-        <p>Loading...</p>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+        <h1 class="text-2xl font-bold mb-4">Product Detail</h1>
+        <div id="productDetail" class="text-center">
+            <p>Loading...</p>
+        </div>
     </div>
 
     <script>
@@ -22,17 +25,17 @@
             .then(product => {
                 const productDetail = document.getElementById('productDetail');
                 productDetail.innerHTML = `
-                    <h2>${product.title}</h2>
-                    <img src="${product.image}" alt="${product.title}" style="max-width: 300px;">
-                    <p>Description: ${product.description}</p>
-                    <p>Price: $${product.price}</p>
-                    <p>Category: ${product.category}</p>
+                    <h2 class="text-xl font-semibold mb-2">${product.title}</h2>
+                    <img src="${product.image}" alt="${product.title}" class="mx-auto mb-4 rounded-lg shadow-md" style="max-width: 300px;">
+                    <p class="text-gray-700 mb-2">Description: ${product.description}</p>
+                    <p class="text-gray-700 mb-2">Price: $${product.price}</p>
+                    <p class="text-gray-700">Category: ${product.category}</p>
                 `;
             })
             .catch(error => {
                 console.error('Error fetching product detail:', error);
                 const productDetail = document.getElementById('productDetail');
-                productDetail.innerHTML = `<p>Error fetching product detail</p>`;
+                productDetail.innerHTML = `<p class="text-red-600">Error fetching product detail</p>`;
             });
     </script>
 </body>
