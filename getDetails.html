@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+</head>
+<body>
+    <h1>Product Detail</h1>
+    <div id="productDetail">
+        <p>Loading...</p>
+    </div>
+
+    <script>
+        // Ambil id produk dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        // Ambil detail produk berdasarkan id dari API
+        fetch(`https://fakestoreapi.com/products/${productId}`)
+            .then(response => response.json())
+            .then(product => {
+                const productDetail = document.getElementById('productDetail');
+                productDetail.innerHTML = `
+                    <h2>${product.title}</h2>
+                    <img src="${product.image}" alt="${product.title}" style="max-width: 300px;">
+                    <p>Description: ${product.description}</p>
+                    <p>Price: $${product.price}</p>
+                    <p>Category: ${product.category}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching product detail:', error);
+                const productDetail = document.getElementById('productDetail');
+                productDetail.innerHTML = `<p>Error fetching product detail</p>`;
+            });
+    </script>
+</body>
+</html>

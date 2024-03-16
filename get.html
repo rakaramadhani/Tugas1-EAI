@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-950">
+    <div class="m-12">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Image
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Product Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Product Desc
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Price
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead >
+                <tbody id="productList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchData(){ 
+            try {
+                const response = await fetch('https://fakestoreapi.com/products');
+                const result = await response.json();
+                console.log(result);
+
+                const productList = document.getElementById('productList');
+
+                result.forEach(product => {
+                    const description = product.description.length > 50 ? `${product.description.slice(0, 50)}...` : product.description;
+                    const storeHTML = `
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="p-4">
+                            <img src="${product.image}" class="w-16 md:w-32 max-w-full max-h-full" alt="Product Image">
+                        </td>
+                        <td class="px-6 py-4">
+                            ${product.title}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="description" data-full-description="${product.description}">${description}</span>
+                            ${product.description.length > 50 ? `<button class="text-blue-500 underline pl-2">Read more</button>` : ''}
+                        </td>
+                        <td class="px-6 py-4">
+                            $${product.price}
+                        </td>
+                        <td><button onclick="detailProduct('${product.id}')">Detail</button></td>
+                    </tr>`;
+                    productList.innerHTML += storeHTML;
+                });
+                
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function detailProduct(productId) {
+            // Redirect to the edit page with the product ID
+            window.location.href = `getDetails.html?id=${productId}`;
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
